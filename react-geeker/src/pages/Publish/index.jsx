@@ -13,7 +13,7 @@ import { PlusOutlined } from '@ant-design/icons';
 export default function Publish() {
 
   const [channelList, setChannelList] = useState([]);
-  const [ImageList, setImageList] = useState([]);
+  const [imageList, setImageList] = useState([]);
   const [imageType, setImageType] = useState(0);
 
   // 请求频道数据
@@ -27,14 +27,17 @@ export default function Publish() {
 
   // 收集数据提交表单
   const onFinish = async (values) => {
+    if (imageList.length !== imageType) {
+      return message.warning("封面类型和图片数量不匹配");
+    }
     // 整理请求数据
     const { title, content, channel_id } = values;
     const reqData = {
       title,
       content,
       cover: {
-        type: 0,
-        images: []
+        type: imageType,
+        images: imageList.map(item => item.response.data.url),
       },
       channel_id,
     }
