@@ -9,3 +9,15 @@ export function getChannel(){
         url:'/channels'
     })
 }
+
+/**
+ * 提交文章表单
+ * @param {*} data 
+ */
+export function createArticle(data){
+    return request({
+        url:'/mp/articles?draft=false',
+        method:'post',
+        data
+    })
+}

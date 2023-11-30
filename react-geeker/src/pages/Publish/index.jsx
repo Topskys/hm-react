@@ -7,7 +7,8 @@ import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { getChannel } from '@/apis/article';
+import { createArticle, getChannel } from '@/apis/article';
+import { message } from 'antd';
 
 
 export default function Publish() {
@@ -23,6 +24,23 @@ export default function Publish() {
     getChannelList();
   }, []);
 
+  // 收集数据提交表单
+  const onFinish = async (values) => {
+    // 整理请求数据
+    const { title, content, channel_id } = values;
+    const reqData = {
+      title,
+      content,
+      cover: {
+        type: 0,
+        images: []
+      },
+      channel_id,
+    }
+    // 发送请求
+    const res = await createArticle(reqData);
+    message.success(res.message);
+  }
 
 
   return (
@@ -30,7 +48,7 @@ export default function Publish() {
       <Card title={
         <Breadcrumb items={[{ title: <Link to={'/'}>首页</Link> }, { title: '发布文章' }]} />
       }>
-        <Form labelCol={{ span: 4 }} wrapperCol={{ span: 16 }} initialValues={{ type: 1 }}>
+        <Form labelCol={{ span: 4 }} wrapperCol={{ span: 16 }} initialValues={{ type: 1 }} validateTrigger='onBlur' onFinish={onFinish}>
           <Form.Item label="标题" name="title" rules={[{ required: true, message: '请输入文章标题' }]}>
             <Input placeholder='请输入' style={{ width: 400 }} />
           </Form.Item>
