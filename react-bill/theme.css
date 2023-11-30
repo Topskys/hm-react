@@ -1,0 +1,12 @@
+/* 订制antd主题颜色 */
+
+/* 全局样式 */
+:root:root {
+    --adm-color-primary: rgb(105,174,120);
+}
+
+
+/* 局部样式 */
+/* .purple {
+    --adm-color-primary: pink;
+} */
