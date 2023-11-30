@@ -5,9 +5,26 @@ import { Space } from 'antd';
 import './index.scss';
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { getChannel } from '@/apis/article';
 
 
 export default function Publish() {
+
+  const [channelList, setChannelList] = useState([]);
+
+  // 请求频道数据
+  useEffect(() => {
+    const getChannelList = async () => {
+      const res = await getChannel()
+      setChannelList(res.data.channels)
+    };
+    getChannelList();
+  }, []);
+
+
+
   return (
     <div className="publish">
       <Card title={
@@ -19,14 +36,14 @@ export default function Publish() {
           </Form.Item>
           <Form.Item label="频道" name="channel_id" rules={[{ required: true, message: "请选择文章频道" }]}>
             <Select placeholder="请选择文章频道" style={{ width: 400 }}>
-              <Select.Option value={0}>前端</Select.Option>
+              {channelList.map(item => <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>)}
             </Select>
           </Form.Item>
           <Form.Item label="内容" name="content" rules={[{
             required: true,
             message: "请输入文章内容"
           }]}>
-            <ReactQuill theme='snow' placeholder='请输入文章内容'  className='publish-quill'/>
+            <ReactQuill theme='snow' placeholder='请输入文章内容' className='publish-quill' />
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 4 }}>
             <Space>
