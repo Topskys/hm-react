@@ -76,7 +76,7 @@ export default function Publish() {
                 <Radio value={0}>无图</Radio>
               </Radio.Group>
             </Form.Item>
-            {imageType > 0 && <Upload listType="picture-card" showUploadList name='image' action='http://geek.itheima.net/v1_0/upload' onChange={onUploadChange} >
+            {imageType > 0 && <Upload listType="picture-card" showUploadList multiple maxCount={imageType} name='image' action='http://geek.itheima.net/v1_0/upload' onChange={onUploadChange} >
               <div style={{ marginTop: 8 }}>
                 <PlusOutlined />
               </div>
