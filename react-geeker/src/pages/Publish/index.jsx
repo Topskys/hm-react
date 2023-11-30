@@ -14,6 +14,7 @@ export default function Publish() {
 
   const [channelList, setChannelList] = useState([]);
   const [ImageList, setImageList] = useState([]);
+  const [imageType, setImageType] = useState(0);
 
   // 请求频道数据
   useEffect(() => {
@@ -47,13 +48,18 @@ export default function Publish() {
     setImageList(value.fileList);
   }
 
+  // 切换封面类型
+  const onTypeChange = (e) => {
+    const type = e.target.value;
+    setImageType(type);
+  }
 
   return (
     <div className="publish">
       <Card title={
         <Breadcrumb items={[{ title: <Link to={'/'}>首页</Link> }, { title: '发布文章' }]} />
       }>
-        <Form labelCol={{ span: 4 }} wrapperCol={{ span: 16 }} initialValues={{ type: 1 }} validateTrigger='onBlur' onFinish={onFinish}>
+        <Form labelCol={{ span: 4 }} wrapperCol={{ span: 16 }} initialValues={{ type: 0 }} validateTrigger='onBlur' onFinish={onFinish}>
           <Form.Item label="标题" name="title" rules={[{ required: true, message: '请输入文章标题' }]}>
             <Input placeholder='请输入' style={{ width: 400 }} />
           </Form.Item>
@@ -64,17 +70,17 @@ export default function Publish() {
           </Form.Item>
           <Form.Item label="封面" >
             <Form.Item name="type">
-              <Radio.Group>
+              <Radio.Group onChange={onTypeChange}>
                 <Radio value={1}>单图</Radio>
                 <Radio value={3}>三图</Radio>
                 <Radio value={0}>无图</Radio>
               </Radio.Group>
             </Form.Item>
-            <Upload listType="picture-card" showUploadList name='image' action='http://geek.itheima.net/v1_0/upload' onChange={onUploadChange} >
+            {imageType > 0 && <Upload listType="picture-card" showUploadList name='image' action='http://geek.itheima.net/v1_0/upload' onChange={onUploadChange} >
               <div style={{ marginTop: 8 }}>
                 <PlusOutlined />
               </div>
-            </Upload>
+            </Upload>}
           </Form.Item>
           <Form.Item label="内容" name="content" rules={[{
             required: true,
