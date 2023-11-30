@@ -21,7 +21,7 @@ const request = axios.create({
 request.interceptors.request.use(config => {
     const token = getToken();
     if (token) {
-        config.headers.Authorization = token;
+        config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
 }, error => {
@@ -29,11 +29,11 @@ request.interceptors.request.use(config => {
 })
 
 
- // 响应拦截器
+// 响应拦截器
 request.interceptors.response.use(response => {
-    const { data } = response;
-    if (data.code === 200) {
-        return data.data;
+    const { data, status } = response;
+    if (data.code === 200 || [200, 201].includes(status)) {
+        return data;
     } else {
         return Promise.reject(data.msg);
     }

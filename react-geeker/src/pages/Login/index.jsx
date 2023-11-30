@@ -1,7 +1,7 @@
 import React from 'react';
 import './index.scss';
 import logo from '@/assets/logo.png';
-import { Form, Input, Button, Card } from 'antd';
+import { Form, Input, Button, Card,message } from 'antd';
 import { useDispatch } from 'react-redux';
 import { fetchLogin } from '@/store/modules/user';
 import { useNavigate } from 'react-router-dom';
@@ -27,7 +27,7 @@ export default function Login() {
             <Card className="login-container">
                 <img src={logo} alt="" className="login-logo" />
                 <Form validateTrigger="onBlur" onFinish={onFinish}>
-                    {/* 13800000002 */}
+                    {/* 13800000002 246810*/}
                     <Form.Item
                         name="mobile"
                         rules={[
