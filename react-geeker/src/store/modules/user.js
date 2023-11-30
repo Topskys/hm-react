@@ -1,4 +1,4 @@
-import { getUserInfo, login } from "@/apis/user";
+import { getProfile, login } from "@/apis/user";
 import { getToken, setToken as _setToken, removeToken } from "@/utils";
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -27,7 +27,7 @@ const userStore = createSlice({
 })
 
 // 同步actions修改方法
-const { setToken, setUserInfo,clearUserInfo } = userStore.actions;
+const { setToken, setUserInfo, clearUserInfo } = userStore.actions;
 
 // 异步actions请求方法
 const fetchLogin = (loginForm) => {
@@ -42,7 +42,7 @@ const fetchLogin = (loginForm) => {
 const fetchUserInfo = () => {
     return async dispatch => {
         // 1. 发送异步请求
-        const res = await getUserInfo();
+        const res = await getProfile();
         // 2. 提交同步action存储token
         dispatch(setUserInfo(res.data));
     }
@@ -51,5 +51,5 @@ const fetchUserInfo = () => {
 const reducer = userStore.reducer;
 
 
-export { setToken, setUserInfo, fetchLogin, fetchUserInfo,clearUserInfo };
+export { setToken, setUserInfo, fetchLogin, fetchUserInfo, clearUserInfo };
 export default reducer;

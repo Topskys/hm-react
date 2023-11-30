@@ -11,9 +11,9 @@ import 'normalize.css'
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+  // <React.StrictMode> // 严格模式组件会被渲染两次
     <Provider store={store}>
       <RouterProvider router={router}></RouterProvider>
     </Provider>
-  </React.StrictMode>,
+  // </React.StrictMode>,
 )

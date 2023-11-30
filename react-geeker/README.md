@@ -31,3 +31,9 @@ git branch [-vv]
 git show-branch
 ```
 
+### React富文本编辑器
+react-quill
+```bash
+# 安装（兼容react18的版本）
+npm install react-quill@2.0.0-beta.2
+```
