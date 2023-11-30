@@ -31,6 +31,11 @@ git branch [-vv]
 git show-branch
 ```
 
+### Git修改分支名称
+```bash
+git branch -m <旧分支名> <新分支名>
+```
+
 ### React富文本编辑器
 react-quill
 ```bash

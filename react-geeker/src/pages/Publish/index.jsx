@@ -5,25 +5,19 @@ import './index.scss';
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
 import { useState } from 'react';
-import { useEffect } from 'react';
-import { createArticle, getChannel } from '@/apis/article';
+import { createArticle } from '@/apis/article';
 import { PlusOutlined } from '@ant-design/icons';
+import { useChannel } from '@/hooks/useChannel';
 
 
 export default function Publish() {
 
-  const [channelList, setChannelList] = useState([]);
+
   const [imageList, setImageList] = useState([]);
   const [imageType, setImageType] = useState(0);
 
   // 请求频道数据
-  useEffect(() => {
-    const getChannelList = async () => {
-      const res = await getChannel()
-      setChannelList(res.data.channels)
-    };
-    getChannelList();
-  }, []);
+  const { channelList } = useChannel();
 
   // 收集数据提交表单
   const onFinish = async (values) => {
