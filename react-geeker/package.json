@@ -1,19 +1,17 @@
 {
-  "name": "react-bill",
+  "name": "react-geeker",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --host && npm run server",
-    "build": "craco vite build",
+    "dev": "vite --host",
+    "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
-    "server": "json-server ./server/db.json --port 8888 --watch"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.7",
-    "antd-mobile": "^5.33.0",
-    "antd-mobile-icons": "^0.3.0",
+    "antd": "^5.11.5",
     "axios": "^1.6.2",
     "classnames": "^2.3.2",
     "dayjs": "^1.11.10",
@@ -23,7 +21,6 @@
     "react-router-dom": "^6.20.0"
   },
   "devDependencies": {
-    "@craco/craco": "^7.1.0",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "@vitejs/plugin-react": "^4.2.0",
@@ -31,7 +28,6 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.4",
-    "json-server": "^0.17.4",
     "sass": "^1.69.5",
     "vite": "^5.0.0"
   }

@@ -1,10 +1,10 @@
-import { createBrowserRouter, createHashRouter } from "react-router-dom";
 import Login from "@/pages/Login";
 import Layout from "@/pages/Layout";
 import New from "@/pages/New";
 import Month from "@/pages/Month";
 import Year from "@/pages/Year";
 import NotFound from "@/pages/NotFound";
+import { createBrowserRouter, createHashRouter } from "react-router-dom";
 
 
 const routes = [
@@ -16,7 +16,6 @@ const routes = [
         path: '/',
         element: <Layout />,
         children: [
-
             {
                 // path: '/month',
                 index: true, // 注释掉path且index设为true，则该页面是二级默认路由

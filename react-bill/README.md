@@ -63,7 +63,7 @@ npm install @craco/craco --save-dev
 }
 }
 ```
-新建craco.config.js
+新建jsconfig.js
 ```json
 {
     "compilerOptions": {
