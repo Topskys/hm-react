@@ -8,7 +8,8 @@
  */
 
 import axios from 'axios'
-import { getToken } from '@/utils';
+import { getToken, removeToken } from '@/utils';
+import router from '@/router';
 
 
 const request = axios.create({
@@ -38,6 +39,14 @@ request.interceptors.response.use(response => {
         return Promise.reject(data.msg);
     }
 }, error => {
+    // 大于2xx触发该函数
+    if (error.response.status === 401) {
+        removeToken();
+        router.navigate("/login");
+        // 防止navigate跳转失败，进行强制刷新
+        window.location.reload();
+    }
+
     return Promise.reject(error);
 })
 
