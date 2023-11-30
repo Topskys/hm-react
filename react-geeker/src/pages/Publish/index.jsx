@@ -1,19 +1,19 @@
 import React from 'react';
-import { Breadcrumb, Card, Form, Button, Select, Input } from 'antd';
+import { Space, Breadcrumb, Card, Form, Button, Select, Input, Upload, message, Radio } from 'antd';
 import { Link } from 'react-router-dom';
-import { Space } from 'antd';
 import './index.scss';
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { createArticle, getChannel } from '@/apis/article';
-import { message } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 
 
 export default function Publish() {
 
   const [channelList, setChannelList] = useState([]);
+  const [ImageList, setImageList] = useState([]);
 
   // 请求频道数据
   useEffect(() => {
@@ -42,6 +42,11 @@ export default function Publish() {
     message.success(res.message);
   }
 
+  // 上传封面图片的回调
+  const onUploadChange = (value) => {
+    setImageList(value.fileList);
+  }
+
 
   return (
     <div className="publish">
@@ -56,6 +61,20 @@ export default function Publish() {
             <Select placeholder="请选择文章频道" style={{ width: 400 }}>
               {channelList.map(item => <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>)}
             </Select>
+          </Form.Item>
+          <Form.Item label="封面" >
+            <Form.Item name="type">
+              <Radio.Group>
+                <Radio value={1}>单图</Radio>
+                <Radio value={3}>三图</Radio>
+                <Radio value={0}>无图</Radio>
+              </Radio.Group>
+            </Form.Item>
+            <Upload listType="picture-card" showUploadList name='image' action='http://geek.itheima.net/v1_0/upload' onChange={onUploadChange} >
+              <div style={{ marginTop: 8 }}>
+                <PlusOutlined />
+              </div>
+            </Upload>
           </Form.Item>
           <Form.Item label="内容" name="content" rules={[{
             required: true,
