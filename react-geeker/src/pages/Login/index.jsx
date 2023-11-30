@@ -2,12 +2,24 @@ import React from 'react';
 import './index.scss';
 import logo from '@/assets/logo.png';
 import { Form, Input, Button, Card } from 'antd';
+import { useDispatch } from 'react-redux';
+import { fetchLogin } from '@/store/modules/user';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Login() {
 
-    const onFinish = (values) => {
-        console.log('Success:', values);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    // 提交登录
+    const onFinish = async (values) => {
+        // 1.触发异步action fetchLogin
+        await dispatch(fetchLogin(values));
+        // 2. 跳转首页
+        navigate('/');
+        // 3. 提示
+        message.success('登录成功');
     };
 
     return (
@@ -15,6 +27,7 @@ export default function Login() {
             <Card className="login-container">
                 <img src={logo} alt="" className="login-logo" />
                 <Form validateTrigger="onBlur" onFinish={onFinish}>
+                    {/* 13800000002 */}
                     <Form.Item
                         name="mobile"
                         rules={[
