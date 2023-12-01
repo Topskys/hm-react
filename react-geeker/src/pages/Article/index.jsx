@@ -1,14 +1,16 @@
-import { Card, Table, Form, Radio, Breadcrumb, DatePicker, Select, Button, Space, Tag } from 'antd'
+import { Card, Table, Form, Radio, Breadcrumb, DatePicker, Select, Button, Space, Tag, Popconfirm } from 'antd'
 import React from 'react'
 import img404 from '@/assets/error.png'
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { useChannel } from '@/hooks/useChannel';
 import locale from 'antd/es/date-picker/locale/zh_CN';
-import { getArticleList } from '@/apis/article';
+import { delArticle, getArticleList } from '@/apis/article';
 
 
 export default function Article() {
+
+  const navigate=useNavigate()
 
   // init state
   const [articles, setArticles] = React.useState([]);
@@ -101,31 +103,59 @@ export default function Article() {
         return (
           <Space>
             <Button
-              onClick={() => history.push(`/edit/${item.id}`)}
+              onClick={() => navigate(`/publish?id=${item.id}`)}
               type='primary'
               shape='circle'
               icon={<EditOutlined />}
             />
-            <Button
-              onClick={() => handleDelById(item.id)}
-              type='primary'
-              danger
-              shape='circle'
-              icon={<DeleteOutlined />}
-            />
+            <Popconfirm title="是否确认删除？"
+              description="Are you sure to delete this task?"
+              onConfirm={()=>onConfirm(item)}
+              okText="Yes"
+              cancelText="No"
+            ><Button
+                type='primary'
+                danger
+                shape='circle'
+                icon={<DeleteOutlined />}
+              />
+            </Popconfirm>
           </Space>
         )
       },
     },
   ]
 
-  const handleDelById = (id) => { }
+  // 删除
+  const onConfirm = async (data) => { 
+    console.log(data);
+    await delArticle(data.id);
+    setParams({
+      ...params
+    })
+  }
+
+  // 当前页码变化时
+  const onPageChange = (page) => {
+    setParams({
+      ...params,
+      page: page
+    })
+  }
+
+  // 当前页面显示大小变化时
+  const onPageSizeChange = (current, size) => {
+    setParams({
+      ...params,
+      per_page: size
+    })
+  }
 
 
 
 
 
-  
+
 
   return (
     <div className='article'>
@@ -165,19 +195,19 @@ export default function Article() {
             </Button>
           </Form.Item>
         </Form>
-        {/* 搜索结果 */}
-        <h3>根据筛选条件共查询到 {articles.total_count} 条结果：</h3>
-        {/* 表格 */}
+      </Card>
+      <Card title={`根据筛选条件共查询到 ${count} 条结果：`}>
         <Table
-          dataSource={articles.results}
+          dataSource={articles}
           rowKey='id'
           columns={columns}
           pagination={{
-            position: ['bottomCenter', 'topCenter'],
-            total: articles.total_count,
-            current: articles.page,
-            pageSize: articles.per_page,
+            position: ['bottomCenter'],
+            total: count,
+            current: params.page,
+            pageSize: params.per_page,
             onChange: onPageChange,
+            onShowSizeChange: onPageSizeChange,
           }}
         />
       </Card>

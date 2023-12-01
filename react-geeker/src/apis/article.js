@@ -34,3 +34,15 @@ export function getArticleList(params) {
         params
     })
 }
+
+
+/**
+ * 根据文章编号删除文章
+ * @param {*} id 文章编号
+ */
+export function delArticle(id) {
+    return request({
+        url: `/mp/articles/${id}`,
+        method: 'DELETE'
+    })
+}
