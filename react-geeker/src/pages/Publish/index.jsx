@@ -57,8 +57,14 @@ export default function Publish() {
   const [form] = Form.useForm(); // 表单实例
   useEffect(() => {
     async function getArticleDetail() {
-      const res = await getArticleById(articleId);
-      form.setFieldsValue(res.data);
+      const { data } = await getArticleById(articleId);
+      const { cover } = data
+      form.setFieldsValue({
+        ...data,
+        type: cover.type,
+      }); // 因数据结构问题，无法直接回填type {cover:{type:3}} --> {type:3}
+      setImageType(cover.type);
+      setImageList(cover.images.map(item => ({ url: item })));
     }
     getArticleDetail();
   }, [articleId, form])
@@ -85,7 +91,7 @@ export default function Publish() {
                 <Radio value={0}>无图</Radio>
               </Radio.Group>
             </Form.Item>
-            {imageType > 0 && <Upload listType="picture-card" showUploadList multiple maxCount={imageType} name='image' action='http://geek.itheima.net/v1_0/upload' onChange={onUploadChange} >
+            {imageType > 0 && <Upload listType="picture-card" showUploadList multiple maxCount={imageType} name='image' action='http://geek.itheima.net/v1_0/upload' onChange={onUploadChange} fileList={imageList}>
               <div style={{ marginTop: 8 }}>
                 <PlusOutlined />
               </div>
