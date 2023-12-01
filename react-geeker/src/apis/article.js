@@ -11,7 +11,7 @@ export function getChannel() {
 }
 
 /**
- * 提交文章表单
+ * 提交新增文章表单
  * @param {*} data 
  */
 export function createArticle(data) {
@@ -56,5 +56,19 @@ export function getArticleById(id) {
     return request({
         url: `/mp/articles/${id}`,
         method: 'GET'
+    })
+}
+
+
+
+/**
+ * 提交修改文章表单
+ * @param {*} data
+ */
+export function updateArticle(data) {
+    return request({
+        url: `/mp/articles/${data.id}?draft=false`,
+        method: 'PUT',
+        data
     })
 }

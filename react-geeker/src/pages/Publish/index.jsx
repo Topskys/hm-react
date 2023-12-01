@@ -1,17 +1,18 @@
 import React from 'react';
 import { Space, Breadcrumb, Card, Form, Button, Select, Input, Upload, message, Radio } from 'antd';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams,useNavigate } from 'react-router-dom';
 import './index.scss';
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
 import { useState, useEffect } from 'react';
-import { createArticle, getArticleById } from '@/apis/article';
+import { createArticle, getArticleById, updateArticle } from '@/apis/article';
 import { PlusOutlined } from '@ant-design/icons';
 import { useChannel } from '@/hooks/useChannel';
 
 
 export default function Publish() {
 
+  const navigate= useNavigate();
   const [searchParams] = useSearchParams(); // ?id=xx
   const articleId = searchParams.get('id');
   const [imageList, setImageList] = useState([]);
@@ -32,12 +33,23 @@ export default function Publish() {
       content,
       cover: {
         type: imageType,
-        images: imageList.map(item => item.response.data.url),
+        images: imageList.map(item => {
+          if (item.response) {
+            return item.response.data.url
+          } else {
+            return item.url
+          }
+        }),
       },
       channel_id,
     }
     // 发送请求
-    const res = await createArticle(reqData);
+    let res=''
+    if(articleId){
+      res = await updateArticle({...reqData,id:articleId});
+      navigate("/article")
+    }
+    res = await createArticle(reqData);
     message.success(res.message);
   }
 
@@ -66,13 +78,14 @@ export default function Publish() {
       setImageType(cover.type);
       setImageList(cover.images.map(item => ({ url: item })));
     }
-    getArticleDetail();
-  }, [articleId, form])
+    articleId && getArticleDetail();
+  }, [articleId, form]);
+
 
   return (
     <div className="publish">
       <Card title={
-        <Breadcrumb items={[{ title: <Link to={'/'}>首页</Link> }, { title: '发布文章' }]} />
+        <Breadcrumb items={[{ title: <Link to={'/'}>首页</Link> }, { title: articleId ? '编辑文章' : '发布文章' }]} />
       }>
         <Form form={form} labelCol={{ span: 4 }} wrapperCol={{ span: 16 }} initialValues={{ type: 0 }} validateTrigger='onBlur' onFinish={onFinish}>
           <Form.Item label="标题" name="title" rules={[{ required: true, message: '请输入文章标题' }]}>
