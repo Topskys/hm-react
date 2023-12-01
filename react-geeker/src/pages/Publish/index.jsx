@@ -1,18 +1,19 @@
 import React from 'react';
 import { Space, Breadcrumb, Card, Form, Button, Select, Input, Upload, message, Radio } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import './index.scss';
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
-import { useState } from 'react';
-import { createArticle } from '@/apis/article';
+import { useState, useEffect } from 'react';
+import { createArticle, getArticleById } from '@/apis/article';
 import { PlusOutlined } from '@ant-design/icons';
 import { useChannel } from '@/hooks/useChannel';
 
 
 export default function Publish() {
 
-
+  const [searchParams] = useSearchParams(); // ?id=xx
+  const articleId = searchParams.get('id');
   const [imageList, setImageList] = useState([]);
   const [imageType, setImageType] = useState(0);
 
@@ -51,12 +52,23 @@ export default function Publish() {
     setImageType(type);
   }
 
+
+  // 修改回填数据
+  const [form] = Form.useForm(); // 表单实例
+  useEffect(() => {
+    async function getArticleDetail() {
+      const res = await getArticleById(articleId);
+      form.setFieldsValue(res.data);
+    }
+    getArticleDetail();
+  }, [articleId, form])
+
   return (
     <div className="publish">
       <Card title={
         <Breadcrumb items={[{ title: <Link to={'/'}>首页</Link> }, { title: '发布文章' }]} />
       }>
-        <Form labelCol={{ span: 4 }} wrapperCol={{ span: 16 }} initialValues={{ type: 0 }} validateTrigger='onBlur' onFinish={onFinish}>
+        <Form form={form} labelCol={{ span: 4 }} wrapperCol={{ span: 16 }} initialValues={{ type: 0 }} validateTrigger='onBlur' onFinish={onFinish}>
           <Form.Item label="标题" name="title" rules={[{ required: true, message: '请输入文章标题' }]}>
             <Input placeholder='请输入' style={{ width: 400 }} />
           </Form.Item>

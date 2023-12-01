@@ -46,3 +46,15 @@ export function delArticle(id) {
         method: 'DELETE'
     })
 }
+
+
+/**
+ * 根据文章编号查询文章详情数据
+ * @param {*} id 
+ */
+export function getArticleById(id) {
+    return request({
+        url: `/mp/articles/${id}`,
+        method: 'GET'
+    })
+}
