@@ -6,9 +6,10 @@ import Callback from '../pages/Callback';
 import ForwardRef from '../pages/ForwardRef';
 import Imperative from '../pages/Imperative';
 import Counter from '../ClassComponents/Counter';
+import Zustand from '../pages/Zustand';
 
 
-const routes = [
+export const routes = [
     {
         path: '/',
         element: <Home />
@@ -36,6 +37,10 @@ const routes = [
     {
         path: '/counter',
         element: <Counter/>
+    },
+    {
+        path: '/zustand',
+        element: <Zustand />
     }
 ]
 
